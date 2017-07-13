@@ -16,6 +16,9 @@ public class AddingMachine {
 		System.out.println(firstNumber + " + " + secondNumber + " = " + sum);
 		System.out.println(firstNumber + " + " + secondNumber + " = " + firstNumber + secondNumber);
 		System.out.println(firstNumber + " + " + secondNumber + " = " + ( firstNumber + secondNumber) );
+		
+		scanner.close();				
+		
 	}
 
 }
