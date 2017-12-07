@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
-
+@Disabled
 @Autonomous(name="blue back linear", group="Pushbot")
 
 public class BlueBackLinearAuto extends LinearOpMode {
