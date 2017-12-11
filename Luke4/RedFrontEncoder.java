@@ -37,9 +37,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
-@Autonomous(name="Red back encoder", group="Pushbot")
+@Autonomous(name="Red Front encoder", group="Pushbot")
 
-public class RedBackEncoder extends LinearOpMode {
+public class RedFrontEncoder extends LinearOpMode {
 
     /* Declare OpMode members. */
 
@@ -53,6 +53,7 @@ public class RedBackEncoder extends LinearOpMode {
     double right = 0;
     RelicRecoveryVuMark vuMark;
     int CypherValue;
+    int strafeyTeamo;
     boolean Blue = false;
     int backwards = 0;
     double max = 1.0;
@@ -94,11 +95,16 @@ public class RedBackEncoder extends LinearOpMode {
             telemetry.update();
             vuMark = robot.vuforiaScan();
             if (vuMark == RelicRecoveryVuMark.RIGHT){
-                CypherValue = -475;
+                CypherValue = -515;
+                strafeyTeamo = 1600;
                 right = 0.2;
             }
             else if (vuMark == RelicRecoveryVuMark.LEFT){
-                CypherValue = 475;
+                CypherValue = 550;
+                strafeyTeamo = 0;
+            }
+            else if (vuMark == RelicRecoveryVuMark.CENTER){
+                strafeyTeamo = 800;
             }
 
             telemetry.addData("VuMark", "%s visible", vuMark);
@@ -120,18 +126,20 @@ public class RedBackEncoder extends LinearOpMode {
             //backwards = 500;
             robot.ballSensorServo2.setPosition(1.0);
             robot.encoderDrive(this, DRIVE_SPEED, -130, 130, .7, runtime,true);
-//:)
+            //:)
         }
 
 
 
-        robot.encoderDrive(this, DRIVE_SPEED, 2368 + CypherValue + backwards,2368+ CypherValue + backwards, 3.5, runtime,true);
+        robot.encoderDrive(this, DRIVE_SPEED, 1700 + backwards,1700 + backwards, 3.5, runtime,true);
 
-        robot.encoderDrive(this, DRIVE_SPEED, 1375, -1375,2, runtime,false);
+        robot.encoderStrafe(this, DRIVE_SPEED, 1400 + CypherValue, 3, runtime,false);
+
+
 
         robot.encoderDrive(this, DRIVE_SPEED, 500,500, 1, runtime,false);
         robot.open();
-        robot.encoderDrive(this,DRIVE_SPEED, -1000, -1000, 2,runtime,false);
+        robot.encoderDrive(this,DRIVE_SPEED, -200, -200, 2,runtime,false);
        robot.forkLifterDcMotor.setPower(0.75);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 0.5)) {
@@ -139,10 +147,16 @@ public class RedBackEncoder extends LinearOpMode {
             telemetry.update();
         }
         robot.forkLifterDcMotor.setPower(0);
-        robot.encoderDrive(this, DRIVE_SPEED, 2*1375, 2*-1375, 3, runtime,false);
+        robot.encoderStrafe(this,DRIVE_SPEED*2,1500 + strafeyTeamo,1.5,runtime,false);
+        robot.encoderDrive(this, DRIVE_SPEED*2, 2*1400, 2*-1400, 1.5, runtime,false);
         robot.partial();
-        robot.encoderDrive(this, DRIVE_SPEED, 1000, 1000, 2, runtime,false);
+        robot.encoderDrive(this, DRIVE_SPEED*2, 2800, 2800, 1, runtime,false);
         robot.squeeze();
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 0.5)) {
+            telemetry.addData("Path", "LIFTING THE BLOCK!!! %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
         robot.forkLifterDcMotor.setPower(-1);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 0.3)) {
@@ -150,9 +164,10 @@ public class RedBackEncoder extends LinearOpMode {
             telemetry.update();
         }
         robot.forkLifterDcMotor.setPower(0);
-        robot.encoderDrive(this,DRIVE_SPEED, -1000, -1000, 2,runtime,false);
-        robot.encoderDrive(this, DRIVE_SPEED, -2*1350, 2*1350, 3, runtime,false);
-        robot.encoderDrive(this, DRIVE_SPEED, 400, 400, 1, runtime,false);
+        robot.encoderDrive(this,DRIVE_SPEED*2, -1900, -1900, 1,runtime,false);
+        robot.encoderDrive(this, DRIVE_SPEED*2, -2*1400, 2*1400, 1.5, runtime,false);
+        //robot.encoderDrive(this, DRIVE_SPEED*2, 600, 600, 0.5, runtime,false);
+        robot.encoderStrafe(this,DRIVE_SPEED*2,-1300,1,runtime,false);
         robot.forkLifterDcMotor.setPower(-1);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.2)) {
@@ -161,9 +176,9 @@ public class RedBackEncoder extends LinearOpMode {
         }
         robot.forkLifterDcMotor.setPower(0);
 
-        robot.encoderDrive(this,DRIVE_SPEED,600,600,1,runtime,false);
+        robot.encoderDrive(this,DRIVE_SPEED*2,675,675,0.5,runtime,false);
         robot.open();
-        robot.encoderDrive(this,DRIVE_SPEED,-300,-300,1,runtime,false);
+        robot.encoderDrive(this,DRIVE_SPEED*2,-200,-200,0.5,runtime,false);
         robot.forkLifterDcMotor.setPower(1);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.5)) {
@@ -171,6 +186,7 @@ public class RedBackEncoder extends LinearOpMode {
             telemetry.update();
         }
         robot.forkLifterDcMotor.setPower(0);
+
 
         telemetry.addData("Team 9087", "Autonomous Complete");
         telemetry.update();

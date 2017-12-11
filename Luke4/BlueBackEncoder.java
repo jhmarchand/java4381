@@ -37,9 +37,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
-@Autonomous(name="Red back encoder", group="Pushbot")
+@Autonomous(name="Blue back encoder", group="Pushbot")
 
-public class RedBackEncoder extends LinearOpMode {
+public class BlueBackEncoder extends LinearOpMode {
 
     /* Declare OpMode members. */
 
@@ -87,18 +87,18 @@ public class RedBackEncoder extends LinearOpMode {
 
         robot.forkLifterDcMotor.setPower(-0.75);
         robot.squeeze();
-        robot.ballSensorServo2.setPosition(0.5);
+        robot.ballSensorServo.setPosition(0.78);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.0)) {
             telemetry.addData("Path", "lifting block %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
             vuMark = robot.vuforiaScan();
             if (vuMark == RelicRecoveryVuMark.RIGHT){
-                CypherValue = -475;
+                CypherValue = 475;
                 right = 0.2;
             }
             else if (vuMark == RelicRecoveryVuMark.LEFT){
-                CypherValue = 475;
+                CypherValue = -475;
             }
 
             telemetry.addData("VuMark", "%s visible", vuMark);
@@ -111,23 +111,23 @@ public class RedBackEncoder extends LinearOpMode {
 
         }
         runtime.reset();
-        if (robot.seeBlue(true) == false && robot.seeRed(false) == true) {
+        if (robot.seeBlue(false) == true && robot.seeRed(true) == false) {
             //robot.encoderDrive(this, DRIVE_SPEED, 500, 500, 1, runtime);
             //backwards = -500;
         }
-        else if (robot.seeBlue(true) == true && robot.seeRed(false) == false) {
-            robot.encoderDrive(this, DRIVE_SPEED, 130, -130, .7, runtime,false);
+        else if (robot.seeBlue(false) == false && robot.seeRed(true) == true) {
+            robot.encoderDrive(this, DRIVE_SPEED, -130, 130, .7, runtime,false);
             //backwards = 500;
-            robot.ballSensorServo2.setPosition(1.0);
-            robot.encoderDrive(this, DRIVE_SPEED, -130, 130, .7, runtime,true);
+            robot.ballSensorServo.setPosition(0.25);
+            robot.encoderDrive(this, DRIVE_SPEED, 130, -130, .7, runtime,true);
 //:)
         }
 
 
 
-        robot.encoderDrive(this, DRIVE_SPEED, 2368 + CypherValue + backwards,2368+ CypherValue + backwards, 3.5, runtime,true);
+        robot.encoderDrive(this, DRIVE_SPEED, 2268 + CypherValue + backwards,2268+ CypherValue + backwards, 3.5, runtime,true);
 
-        robot.encoderDrive(this, DRIVE_SPEED, 1375, -1375,2, runtime,false);
+        robot.encoderDrive(this, DRIVE_SPEED, -1400, 1400,2, runtime,false);
 
         robot.encoderDrive(this, DRIVE_SPEED, 500,500, 1, runtime,false);
         robot.open();

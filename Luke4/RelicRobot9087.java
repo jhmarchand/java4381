@@ -56,16 +56,11 @@ public class RelicRobot9087 {
 
     /* Constructor */
     public RelicRobot9087() {
-
     }
 
-    /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap aHardwareMap) {
-        // Save reference to Hardware map
-        hardwareMap = aHardwareMap;
+    public void init (HardwareMap hardwareMap) {
 
-        // Define and Initialize Motors
-        leftFrontDcMotor = hardwareMap.get(DcMotor.class, "leftFrontDrive");
+        leftFrontDcMotor = hardwareMap.get(DcMotor.class,"leftFrontDrive");
         rightFrontDcMotor = hardwareMap.get(DcMotor.class, "rightFrontDrive");
         leftRearDcMotor = hardwareMap.get(DcMotor.class, "leftRearDrive");
         rightRearDcMotor = hardwareMap.get(DcMotor.class, "rightRearDrive");
@@ -233,7 +228,7 @@ public class RelicRobot9087 {
 
     public void encoderDrive(LinearOpMode opMode, double speed,
                              int RighttargetPosition, int LeftTargetPosition,
-                             double timeoutS, ElapsedTime runtime) {
+                             double timeoutS, ElapsedTime runtime, boolean stay) {
         int newLeftTarget;
         int newRightTarget;
 
@@ -263,16 +258,82 @@ public class RelicRobot9087 {
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opMode.opModeIsActive() &&
-                    runtime.seconds() < timeoutS &&
-                    leftFrontDcMotor.isBusy() || rightFrontDcMotor.isBusy() || leftRearDcMotor.isBusy() || rightRearDcMotor.isBusy()) {
+                    (runtime.seconds() < timeoutS) &&
+                    (leftFrontDcMotor.isBusy() || rightFrontDcMotor.isBusy() || leftRearDcMotor.isBusy() || rightRearDcMotor.isBusy())) {
 
                 // Display it for the driver.
+                opMode.telemetry.addData("Path", "Busy... %2.5f S Elapsed", runtime.seconds());
                 opMode.telemetry.addData("Encoder LF", leftFrontDcMotor.getCurrentPosition());
                 opMode.telemetry.addData("ENCODER LB", leftRearDcMotor.getCurrentPosition());
                 opMode.telemetry.addData("ENCODER RF", rightFrontDcMotor.getCurrentPosition());
                 opMode.telemetry.addData("ENCODER RB", rightRearDcMotor.getCurrentPosition());
                 opMode.telemetry.addData("distance", RighttargetPosition);
                 opMode.telemetry.update();
+                if (stay == true && runtime.seconds() >0.4){
+                    ballSensorServo.setPosition(0.25);
+                    ballSensorServo2.setPosition(1.0);
+                }
+            }
+
+            // Stop all motion;
+            DriveMecanum(0, 0, 0);
+
+            // Turn off RUN_TO_POSITION
+            leftFrontDcMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightFrontDcMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            leftRearDcMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rightRearDcMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            //  sleep(250);   // optional pause after each move
+        }
+    }
+    public void encoderStrafe(LinearOpMode opMode, double speed,
+                             int targetPosition,
+                             double timeoutS, ElapsedTime runtime, boolean stay) {
+        int newLeftTarget;
+        int newRightTarget;
+
+        // Ensure that the opmode is still active
+        if (opMode.opModeIsActive()) {
+
+            // Determine new target position, and pass to motor controller
+
+            leftFrontDcMotor.setTargetPosition(-1*targetPosition + leftFrontDcMotor.getCurrentPosition());
+            leftRearDcMotor.setTargetPosition(targetPosition + leftRearDcMotor.getCurrentPosition());
+            rightFrontDcMotor.setTargetPosition(targetPosition + rightFrontDcMotor.getCurrentPosition());
+            rightRearDcMotor.setTargetPosition(-1*targetPosition + rightRearDcMotor.getCurrentPosition());
+
+            // Turn On RUN_TO_POSITION
+            leftFrontDcMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightFrontDcMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftRearDcMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightRearDcMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            DriveMecanum(0, speed, 0);
+            runtime.reset();
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opMode.opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (leftFrontDcMotor.isBusy() || rightFrontDcMotor.isBusy() || leftRearDcMotor.isBusy() || rightRearDcMotor.isBusy())) {
+
+                // Display it for the driver.
+                opMode.telemetry.addData("Path", "Busy... %2.5f S Elapsed", runtime.seconds());
+                opMode.telemetry.addData("Encoder LF", leftFrontDcMotor.getCurrentPosition());
+                opMode.telemetry.addData("ENCODER LB", leftRearDcMotor.getCurrentPosition());
+                opMode.telemetry.addData("ENCODER RF", rightFrontDcMotor.getCurrentPosition());
+                opMode.telemetry.addData("ENCODER RB", rightRearDcMotor.getCurrentPosition());
+                opMode.telemetry.addData("distance", targetPosition);
+                opMode.telemetry.update();
+                if (stay == true && runtime.seconds() >0.4){
+                    ballSensorServo.setPosition(0.25);
+                    ballSensorServo2.setPosition(1.0);
+                }
             }
 
             // Stop all motion;
