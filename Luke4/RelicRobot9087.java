@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
@@ -37,12 +39,13 @@ public class RelicRobot9087 {
     public Servo servoSqueezerLeft = null;
     public Servo ballSensorServo = null;
     public Servo manClawServo = null;
-    public Servo manAngleServo = null;
+    //public Servo manAngleServo = null;
     public ColorSensor colorSensor2 = null;
     public DistanceSensor distanceSensor2 = null;
     public Servo ballSensorServo2 = null;
     public Servo extraGrabServo = null;
     public Servo servoSqueezerLeft2 = null;
+    public com.qualcomm.robotcore.hardware.CRServo relicLifter = null;
     //public Servo servoSqueezerRight2 = null;
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -72,12 +75,13 @@ public class RelicRobot9087 {
         horizontalSlideDcMotor = hardwareMap.get(DcMotor.class, "motor5");
         ballSensorServo = hardwareMap.get(Servo.class, "servo2");
         manClawServo = hardwareMap.get(Servo.class, "Servo4");
-        manAngleServo = hardwareMap.get(Servo.class, "Servo5");
+        //manAngleServo = hardwareMap.get(Servo.class, "Servo5");
         colorSensor2 = hardwareMap.get(ColorSensor.class, "sensor1");
         ballSensorServo2 = hardwareMap.get(Servo.class, "servo3");
         extraGrabServo = hardwareMap.get(Servo.class, "grabby");
         servoSqueezerLeft2 = hardwareMap.get(Servo.class, "spicy1");
         //servoSqueezerRight2 = hardwareMap.get(Servo.class, "spicy0");
+        relicLifter = hardwareMap.get(CRServo.class, "megaServo");
 
 
         leftFrontDcMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors

@@ -56,6 +56,7 @@ public class BlueBackEncoderZOOOOOOOOOOOOOM extends LinearOpMode {
     boolean Blue = false;
     int backwards = 0;
     double max = 1.0;
+    boolean FailSafe = true;
     // Declare OpMode members.
     private RelicRobot9087 robot = new RelicRobot9087();
     private ElapsedTime runtime = new ElapsedTime();
@@ -100,7 +101,9 @@ public class BlueBackEncoderZOOOOOOOOOOOOOM extends LinearOpMode {
             else if (vuMark == RelicRecoveryVuMark.LEFT){
                 CypherValue = -475;
             }
-
+            else if (vuMark == RelicRecoveryVuMark.CENTER || vuMark == RelicRecoveryVuMark.UNKNOWN){
+                CypherValue = 0;
+            }
             telemetry.addData("VuMark", "%s visible", vuMark);
         }
         robot.forkLifterDcMotor.setPower(0);
@@ -114,6 +117,7 @@ public class BlueBackEncoderZOOOOOOOOOOOOOM extends LinearOpMode {
         if (robot.seeBlue(false) == true && robot.seeRed(true) == false) {
             //robot.encoderDrive(this, DRIVE_SPEED, 500, 500, 1, runtime);
             //backwards = -500;
+            FailSafe = false;
         }
         else if (robot.seeBlue(false) == false && robot.seeRed(true) == true) {
             robot.encoderDrive(this, DRIVE_SPEED, -130, 130, .7, runtime,false);
@@ -122,7 +126,9 @@ public class BlueBackEncoderZOOOOOOOOOOOOOM extends LinearOpMode {
             robot.encoderDrive(this, DRIVE_SPEED, 130, -130, .7, runtime,true);
 //:)
         }
-
+        if (FailSafe == true){
+            robot.ballSensorServo2.setPosition(1.0);
+        }
 
 
         robot.encoderDrive(this, DRIVE_SPEED, 2268 + CypherValue + backwards,2268+ CypherValue + backwards, 3.5, runtime,true);
@@ -164,7 +170,7 @@ public class BlueBackEncoderZOOOOOOOOOOOOOM extends LinearOpMode {
         robot.encoderDrive(this,DRIVE_SPEED*2,600,600,0.5,runtime,false);
         robot.open();
         robot.encoderDrive(this,DRIVE_SPEED*2,-1000,-1000,1,runtime,false);
-        robot.forkLifterDcMotor.setPower(1);
+        robot.forkLifterDcMotor.setPower(0.8);
         robot.encoderDrive(this, DRIVE_SPEED*2, 2*1375, 2*-1375, 1.5, runtime,false);
         robot.forkLifterDcMotor.setPower(0);
         robot.partial();

@@ -57,6 +57,7 @@ public class BlueFrontEncoder extends LinearOpMode {
     boolean Blue = false;
     int backwards = 0;
     double max = 1.0;
+    boolean FailSafe = true;
     // Declare OpMode members.
     private RelicRobot9087 robot = new RelicRobot9087();
     private ElapsedTime runtime = new ElapsedTime();
@@ -97,14 +98,16 @@ public class BlueFrontEncoder extends LinearOpMode {
             if (vuMark == RelicRecoveryVuMark.RIGHT){
                 CypherValue = -700;
                 right = 0.2;
+                strafeyTeamo = 0;
             }
             else if (vuMark == RelicRecoveryVuMark.LEFT){
                 CypherValue = 550;
                 strafeyTeamo = -2300;
-                strafeyTeamo = 0;
+
             }
             else if (vuMark == RelicRecoveryVuMark.CENTER|| vuMark == RelicRecoveryVuMark.UNKNOWN){
                 strafeyTeamo = -800;
+                CypherValue = 0;
             }
 
             telemetry.addData("VuMark", "%s visible", vuMark);
@@ -120,6 +123,7 @@ public class BlueFrontEncoder extends LinearOpMode {
         if (robot.seeBlue(false) == true && robot.seeRed(true) == false) {
             //robot.encoderDrive(this, DRIVE_SPEED, 500, 500, 1, runtime);
             //backwards = -500;
+            FailSafe = false;
         }
         else if (robot.seeBlue(false) == false && robot.seeRed(true) == true) {
             robot.encoderDrive(this, DRIVE_SPEED, -130, 130, .7, runtime,false);
@@ -128,7 +132,9 @@ public class BlueFrontEncoder extends LinearOpMode {
             robot.encoderDrive(this, DRIVE_SPEED, 130, -130, .7, runtime,true);
             //:)
         }
-
+        if (FailSafe == true){
+            robot.ballSensorServo2.setPosition(1.0);
+        }
 
 
         robot.encoderDrive(this, DRIVE_SPEED, 1700 + backwards,1700 + backwards, 3.5, runtime,true);

@@ -66,9 +66,12 @@ public class TestTeleOpMode_Iterative extends OpMode
         robot.horizontalSlideDcMotor.setPower(gamepad2.right_stick_y);
 
         if (gamepad2.right_bumper) {
-            robot.manAngleServo.setPosition(0);
+            robot.relicLifter.setPower(-1);
         } else if (gamepad2.left_bumper) {
-            robot.manAngleServo.setPosition(1);
+            robot.relicLifter.setPower(1);
+        }
+        else{
+            robot.relicLifter.setPower(0);
         }
 
         if (gamepad1.a)

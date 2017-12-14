@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-
+@Disabled
 @TeleOp(name="Teleop GyroScope OpMode", group="Iterative Opmode")
 public class TeleOpMode_Gyro extends OpMode
 {
@@ -68,9 +69,9 @@ public class TeleOpMode_Gyro extends OpMode
         robot.horizontalSlideDcMotor.setPower(gamepad2.right_stick_y);
 
         if (gamepad2.right_bumper) {
-            robot.manAngleServo.setPosition(0);
+            robot.relicLifter.setPower(0);
         } else if (gamepad2.left_bumper) {
-            robot.manAngleServo.setPosition(1);
+            robot.relicLifter.setPower(1);
         }
 
         if (gamepad1.a)
