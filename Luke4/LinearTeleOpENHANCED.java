@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 
 
-@TeleOp(name="TeleOp Linear", group="Iterative Opmode")
+@TeleOp(name="TeleOp Linear Driver Enhancements", group="Iterative Opmode")
 
 public class LinearTeleOpENHANCED extends LinearOpMode {
 
@@ -88,7 +88,7 @@ public class LinearTeleOpENHANCED extends LinearOpMode {
                 robot.encoderDrive(this,1,-250,-250,0.5,runtime,true);
                 robot.forkLifterDcMotor.setPower(1);
                 runtime.reset();
-                while (opModeIsActive() && runtime.seconds()<0.5){
+                while (opModeIsActive() && runtime.seconds()<1.2){
                     telemetry.addData("woof", "wait? I'm not a dog");
                     telemetry.update();
                 }
@@ -113,14 +113,14 @@ public class LinearTeleOpENHANCED extends LinearOpMode {
 
             robot.horizontalSlideDcMotor.setPower(gamepad2.right_stick_y);
 
-            if (gamepad2.right_bumper) {
-                robot.relicLifter.setPower(-1);
-            } else if (gamepad2.left_bumper) {
-                robot.relicLifter.setPower(1);
-            }
-            else{
-                robot.relicLifter.setPower(0);
-            }
+            //if (gamepad2.right_bumper) {
+              //  robot.relicLifter.setPower(-1);
+            //} else if (gamepad2.left_bumper) {
+              //  robot.relicLifter.setPower(1);
+            //}
+            //else{
+              //  robot.relicLifter.setPower(0);
+            //}
 
             if (gamepad1.a)
                 max = 1.0;

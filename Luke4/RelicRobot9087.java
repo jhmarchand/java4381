@@ -45,7 +45,7 @@ public class RelicRobot9087 {
     public Servo ballSensorServo2 = null;
     public Servo extraGrabServo = null;
     public Servo servoSqueezerLeft2 = null;
-    public com.qualcomm.robotcore.hardware.CRServo relicLifter = null;
+    //public com.qualcomm.robotcore.hardware.CRServo relicLifter = null;
     //public Servo servoSqueezerRight2 = null;
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -81,7 +81,7 @@ public class RelicRobot9087 {
         extraGrabServo = hardwareMap.get(Servo.class, "grabby");
         servoSqueezerLeft2 = hardwareMap.get(Servo.class, "spicy1");
         //servoSqueezerRight2 = hardwareMap.get(Servo.class, "spicy0");
-        relicLifter = hardwareMap.get(CRServo.class, "megaServo");
+        //relicLifter = hardwareMap.get(CRServo.class, "megaServo");
 
 
         leftFrontDcMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
@@ -117,6 +117,7 @@ public class RelicRobot9087 {
         ballSensorServo.setPosition(0.25);
         ballSensorServo2.setPosition(1);
         manClawServo.setPosition(1);
+        //relicLifter.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.

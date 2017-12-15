@@ -68,11 +68,11 @@ public class TeleOpMode_Gyro extends OpMode
 
         robot.horizontalSlideDcMotor.setPower(gamepad2.right_stick_y);
 
-        if (gamepad2.right_bumper) {
-            robot.relicLifter.setPower(0);
-        } else if (gamepad2.left_bumper) {
-            robot.relicLifter.setPower(1);
-        }
+        //if (gamepad2.right_bumper) {
+          //  robot.relicLifter.setPower(0);
+        //} else if (gamepad2.left_bumper) {
+          //  robot.relicLifter.setPower(1);
+        //}
 
         if (gamepad1.a)
             max = 1.0;
